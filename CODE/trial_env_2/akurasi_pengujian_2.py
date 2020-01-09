@@ -45,7 +45,7 @@ def mismatch_calc(arr):
     
     for i in range(len(arr)):
         percent = mismatch[i] / len(arr[i]) * 100
-        print("             Sub-lokasi",arr[i][0][2], "=",percent,"%")
+        print("             Sub-lokasi",arr[i][0][2], "= {:0.3f} %".format(percent)) #{:0.2f}ºC.\n".format(answer)
 
 
 print("Kesalahan Prediksi pada Ruang 1 adalah :")

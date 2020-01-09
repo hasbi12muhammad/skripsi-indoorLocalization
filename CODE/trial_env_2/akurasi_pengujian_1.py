@@ -28,7 +28,7 @@ simplefilter(action='ignore', category=FutureWarning)
 
 print()
 print("predictions result :")
-print("accuracy score : ",accuracy_score(true_location, predict_location))
+print("accuracy score : {:0.3f}".format(accuracy_score(true_location, predict_location)))
 print("confusion matrix : ")
 print(confusion_matrix(true_location, predict_location))
 print()
