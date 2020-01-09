@@ -3,7 +3,7 @@ from warnings import simplefilter
 
 
 
-url_dt = "real_time_result_3_anchor.csv"
+url_dt = "data_pengujian_2.csv"
 
 header_dt = ['predict','time','true_loc','sub_loc','compatiblity']
 

@@ -7,9 +7,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
 
-url_dt = "real_time_result_2.csv"
+url_dt = "data_pengujian_1.csv"
 
-header_dt = ['predict','time','true_loc','sub_loc','compatiblity']
+header_dt = ['predict','time','true_loc','compatiblity']
 
 data = pandas.read_csv(url_dt, names=header_dt)
 
@@ -22,9 +22,9 @@ arr = shuffle(arr, random_state=8)
 predict_location = arr[:, 0]
 true_location = arr[:, 1]
 
+
 # ignore all future warnings
 simplefilter(action='ignore', category=FutureWarning)
-
 
 print()
 print("predictions result :")

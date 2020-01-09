@@ -1,3 +1,8 @@
+# Pengujian 1
+# Script dibawah ini digunakan untuk mengumpulkan data yang akan digunakan untuk menguji akurasi pelacakan secara keseluruhan.
+# Akurasi pelacakan ini adalah akurasi pelacakan sistem secara keseluruhan dari ketiga ruangan yang digunakan. Pengambilan
+# data dilakukan selama kurang lebih 1 menit tiap ruangan.
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.utils import shuffle
@@ -17,8 +22,8 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 url_dt = "rssi_collected.csv"
-header_dt = ['ruang', 'time', 'sensor1',
-             'sensor2', 'sensor3', 'sensor4', 'sensor5']
+header_dt = ['ruang', 'time', 'node1',
+             'node2', 'node3', 'node4', 'node5']
 data_training = pandas.read_csv(url_dt, names=header_dt)
 
 del data_training['time']
@@ -47,25 +52,23 @@ mac = ["3C:71:BF:C4:E1:F4", "B4:E6:2D:B7:72:45", "B4:E6:2D:B7:6B:91",
 
 # rssi[0] untuk Mac 1, rssi[1] untuk Mac 2, dst...
 rssi = [None, None, None, None, None]
-sensor = [None, None, None, None, None]
+node = [None, None, None, None, None]
 true_loc = None
-sub_loc = None
 
 
 @app.route("/", methods=['POST'])
 def main():
     try:
         data = request.get_json(force=True)
-        global rssi, sensor, true_loc, sub_loc
+        global rssi, node, true_loc
         for i in range(len(mac)):
             if data['mac'] == 'locator':
                 true_loc = data['true_loc']
-                sub_loc = data['sub_loc']
                 break
             elif data['mac'] == mac[i]:
-                if sensor[i] == None:
-                    sensor[i] = "OK"
-                    print('Sensor ', i+1, 'is Online')
+                if node[i] == None:
+                    node[i] = "OK"
+                    print('node ', i+1, 'is Online')
                 rssi[i] = data['rssi']
                 break
 
@@ -93,10 +96,10 @@ def main():
                     print("Pada Jam ", datetime.now().time().replace(
                         microsecond=0), "beacon berada di", predictions[0])
                     new_row = [predictions[0], datetime.now(
-                    ).time().replace(microsecond=0), true_loc, sub_loc, compatibility]
+                    ).time().replace(microsecond=0), true_loc, compatibility]
 
                     if true_loc != None:
-                        with open('real_time_result_2.csv', 'a', newline='') as csv_file:
+                        with open('data_pengujian_1.csv', 'a', newline='') as csv_file:
                             writer = csv.writer(
                                 csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                             writer.writerow(new_row)

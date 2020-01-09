@@ -1,3 +1,7 @@
+# Pengujian 2
+# Script ini digunakan untuk mengumpulkan data tiap sub lokasi pada tiap ruangan. Data yang terkumpul akan digunakan untuk
+# menghitung akurasi tiap sub lokasi sehingga diketahui pada sub lokasi mana sistem mengalami kesalahan dalam pelacakan
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.utils import shuffle
@@ -43,25 +47,32 @@ knn.fit(x_dt, y_dt)
 # Mac 5 dan Mac 6 untuk ESP32 pada Ruang 3
 
 mac = ["3C:71:BF:C4:E1:F4", "B4:E6:2D:B7:72:45", "B4:E6:2D:B7:6B:91",
-       "3C:71:BF:88:A0:B4", "B4:E6:2D:B3:57:E5"]
+       "3C:71:BF:88:A0:B4", "B4:E6:2D:B3:57:E5", "locator"]
 
 # rssi[0] untuk Mac 1, rssi[1] untuk Mac 2, dst...
 rssi = [None, None, None, None, None]
 sensor = [None, None, None, None, None]
+true_loc = None
+sub_loc = None
 
 
 @app.route("/", methods=['POST'])
 def main():
     try:
         data = request.get_json(force=True)
-        global rssi, sensor
-        for i in range(len(sensor)):
-            if data['mac'] == mac[i]:
+        global rssi, sensor, true_loc, sub_loc
+        for i in range(len(mac)):
+            if data['mac'] == 'locator':
+                true_loc = data['true_loc']
+                sub_loc = data['sub_loc']
+                break
+            elif data['mac'] == mac[i]:
                 if sensor[i] == None:
                     sensor[i] = "OK"
                     print('Sensor ', i+1, 'is Online')
                 rssi[i] = data['rssi']
                 break
+
         if not any(x is None for x in rssi):
             nTemp = -120
             bEqual = True
@@ -78,17 +89,23 @@ def main():
                 x_ds = [[rssi[0], rssi[1], rssi[2], rssi[3], rssi[4]]]
                 if x_ds != None:
                     predictions = knn.predict(x_ds)
+                    compatibility = None
+                    if true_loc == predictions[0]:
+                        compatibility = "Match"
+                    else:
+                        compatibility = "Mismatch"
                     print("Pada Jam ", datetime.now().time().replace(
                         microsecond=0), "beacon berada di", predictions[0])
                     new_row = [predictions[0], datetime.now(
-                    ).time().replace(microsecond=0)]
+                    ).time().replace(microsecond=0), true_loc, sub_loc, compatibility]
 
-                    with open('real_time_result.csv', 'a', newline='') as csv_file:
-                        writer = csv.writer(
-                            csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                        writer.writerow(new_row)
+                    if true_loc != None:
+                        with open('data_pengujian_2.csv', 'a', newline='') as csv_file:
+                            writer = csv.writer(
+                                csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                            writer.writerow(new_row)
 
-                    csv_file.close()
+                        csv_file.close()
         return ""
     except Exception as e:
         return print('error', e)
