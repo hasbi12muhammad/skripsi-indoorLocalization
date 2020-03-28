@@ -96,7 +96,7 @@ predictions = knn.predict(x_ds)
 
 print()
 print("predictions result :")
-print("accuracy score : ",accuracy_score(y_ds, predictions))
+print("accuracy score : {:0.3f}".format(accuracy_score(y_ds, predictions))) 
 print("confusion matrix : ")
 print(confusion_matrix(y_ds, predictions))
 print()
