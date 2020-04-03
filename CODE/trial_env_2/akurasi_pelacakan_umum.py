@@ -4,7 +4,7 @@ from warnings import simplefilter
 
 
 
-url_dt = "real_time_result_2.csv"
+url_dt = "data_pengujian_1.csv"
 
 header_dt = ['predict','time','true_loc','sub_loc','compatiblity']
 
@@ -20,11 +20,11 @@ simplefilter(action='ignore', category=FutureWarning)
 
 mismatch = 0
 for i in range(len(arr)):
-    if arr[i][3] == "Mismatch":
+    if arr[i][2] == "Mismatch":
         mismatch = mismatch + 1
     
 percent = mismatch / len(arr) * 100    
-print("Akurasi kesalahan pelacakan secara umum =",round(percent,2),"%")
+print("Akurasi kesalahan sistem =",round(percent,2),"%")
 
 
 
