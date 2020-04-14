@@ -72,14 +72,14 @@ def main():
                     break
 
             if bEqual:
-                print("Beacon tidak terdeteksi")
+                print("iTAG tidak terdeteksi")
             else:
                 global x_ds
                 x_ds = [[rssi[0], rssi[1], rssi[2], rssi[3], rssi[4]]]
                 if x_ds != None:
                     predictions = knn.predict(x_ds)
                     print("Pada Jam ", datetime.now().time().replace(
-                        microsecond=0), "beacon berada di", predictions[0])
+                        microsecond=0), "iTAG berada di", predictions[0])
                     new_row = [predictions[0], datetime.now(
                     ).time().replace(microsecond=0)]
 

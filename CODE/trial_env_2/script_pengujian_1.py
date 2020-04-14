@@ -45,7 +45,7 @@ knn.fit(x_dt, y_dt)
 
 # Mac 1 dan Mac 2 untuk ESP32 pada Ruang 1
 # Mac 3 dan Mac 4 untuk ESP32 pada Ruang 2
-# Mac 5 dan Mac 6 untuk ESP32 pada Ruang 3
+# Mac 5 untuk ESP32 pada Lorong
 
 mac = ["3C:71:BF:C4:E1:F4", "B4:E6:2D:B7:72:45", "B4:E6:2D:B7:6B:91",
        "3C:71:BF:88:A0:B4", "B4:E6:2D:B3:57:E5", "locator"]
